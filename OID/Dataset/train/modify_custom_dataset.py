@@ -47,7 +47,7 @@ Setting up full paths
 # or:
 # 'C:\\Users\\your_name\\PycharmProjects\\CNNCourse\\Section2'
 full_path_to_codes = \
-    '/home/souheil/OID-Image-Recognition/OID/Dataset'
+    '/home/souheil/OID-Image-Recognition/OID/Dataset/train'
 
 
 # Full or absolute path to the directory with downloaded images
@@ -56,7 +56,7 @@ full_path_to_codes = \
 # or:
 # 'C:\\Users\\your_name\\Downloads\\toolkit\\OID\\Dataset\\train\\downloaded_dataset'
 full_path_to_images = \
-    '/home/souheil/OID-Image-Recognition/OID/Dataset'
+    '/home/souheil/OID-Image-Recognition/OID/Dataset/train/Traffic sign'
 
 """
 End of:
@@ -64,178 +64,178 @@ Setting up full paths
 """
 
 
-# """
-# Start of:
+"""
+Start of:
+Defining list of classes' names
+"""
+
 # Defining list of classes' names
-# """
+# (!) Spell in the same way they are in Open Images Dataset
+# (!) No need to use '_' if the name consists of two or more words
+# labels = ['Horse', 'Tiger' 'Cat', 'Dog', 'Polar bear'] i will modify it later 
 
-# # Defining list of classes' names
-# # (!) Spell in the same way they are in Open Images Dataset
-# # (!) No need to use '_' if the name consists of two or more words
-# labels = ['Horse', 'Tiger', 'Cat', 'Dog', 'Polar bear']
-
-# """
-# End of:
-# Defining list of classes' names
-# """
+"""
+End of:
+Defining list of classes' names
+"""
 
 
-# """
-# Start of:
-# Defining Numpy arrays to collect processed images
-# """
+"""
+Start of:
+Defining Numpy arrays to collect processed images
+"""
 
-# # Preparing zero-valued Numpy array for cut objects
-# # Shape: image number, height, width, number of channels
-# x_train = np.zeros((1, 64, 64, 3))
-
-
-# # Preparing zero-valued Numpy array for classes' numbers
-# # Shape: class's number
-# y_train = np.zeros(1)
+# Preparing zero-valued Numpy array for cut objects
+# Shape: image number, height, width, number of channels
+x_train = np.zeros((1, 64, 64, 3))
 
 
-# # Preparing temp zero-valued Numpy array for current cut object
-# # Shape: image number, height, width, number of channels
-# x_temp = np.zeros((1, 64, 64, 3))
+# Preparing zero-valued Numpy array for classes' numbers
+# Shape: class's number
+y_train = np.zeros(1)
 
 
-# # Preparing temp zero-valued Numpy array for class's number
-# # Shape: class's number
-# y_temp = np.zeros(1)
+# Preparing temp zero-valued Numpy array for current cut object
+# Shape: image number, height, width, number of channels
+x_temp = np.zeros((1, 64, 64, 3))
 
 
-# # Defining boolean variable to track arrays' shapes
-# first_object = True
-
-# """
-# Start of:
-# Defining Numpy arrays to collect processed images
-# """
+# Preparing temp zero-valued Numpy array for class's number
+# Shape: class's number
+y_temp = np.zeros(1)
 
 
-# """
-# Start of:
-# Cutting objects from images
-# """
+# Defining boolean variable to track arrays' shapes
+first_object = True
 
-# # Check points
-# # Showing currently active directory
-# print('Currently active directory is:')
-# print(os.getcwd())
-# print()
+"""
+Start of:
+Defining Numpy arrays to collect processed images
+"""
 
 
-# # Activating needed directory with downloaded images
-# os.chdir(full_path_to_images)
+"""
+Start of:
+Cutting objects from images
+"""
+
+# Check points
+# Showing currently active directory
+print('Currently active directory is:')
+print(os.getcwd())
+print()
 
 
-# # Showing currently active directory
-# print('Currently active directory after 1st changing is:')
-# print(os.getcwd())
-# print()
+# Activating needed directory with downloaded images
+os.chdir(full_path_to_images)
 
 
-# # Using method 'os.walk' to iterate all directories and all files
-# # It starts from currently active directory
-# # Fullstop in os.walk('.') means current directory
-# for current_dir, dirs, files in os.walk('.'):
-#     # Iterating all files
-#     for f in files:
-#         # Checking if filename ends with '.jpg'
-#         if f.endswith('.jpg'):
-#             # Reading current image by OpenCV library
-#             # In this way image is opened already as Numpy array
-#             # (!) OpenCV by default reads images in BGR order of channels
-#             image_array = cv2.imread(f)
+# Showing currently active directory
+print('Currently active directory after 1st changing is:')
+print(os.getcwd())
+print()
 
-#             # Swapping channels from BGR to RGB by OpenCV function
-#             image_array = cv2.cvtColor(image_array, cv2.COLOR_BGR2RGB)
 
-#             # Slicing only name from current file without extension
-#             image_name = f[:-4]
+# Using method 'os.walk' to iterate all directories and all files
+# It starts from currently active directory
+# Fullstop in os.walk('.') means current directory
+for current_dir, dirs, files in os.walk('.'):
+    # Iterating all files
+    for f in files:
+        # Checking if filename ends with '.jpg'
+        if f.endswith('.jpg'):
+            # Reading current image by OpenCV library
+            # In this way image is opened already as Numpy array
+            # (!) OpenCV by default reads images in BGR order of channels
+            image_array = cv2.imread(f)
 
-#             # Preparing path to current annotation txt file
-#             # (!) On Windows, it might need to change
-#             # this: + '/' +
-#             # to this: + '\' +
-#             # or to this: + '\\' +
-#             path_to_annotation = 'Label' + '/' + image_name + '.txt'
+            # Swapping channels from BGR to RGB by OpenCV function
+            image_array = cv2.cvtColor(image_array, cv2.COLOR_BGR2RGB)
 
-#             # Getting Pandas dataFrame from current annotation txt file
-#             a = pd.read_csv(path_to_annotation,
-#                             header=None,
-#                             delim_whitespace=True)
+            # Slicing only name from current file without extension
+            image_name = f[:-4]
 
-#             # Getting number of rows and columns from current Pandas dataFrame
-#             a_rows = a.shape[0]
-#             a_columns = a.shape[1]
+            # Preparing path to current annotation txt file
+            # (!) On Windows, it might need to change
+            # this: + '/' +
+            # to this: + '\' +
+            # or to this: + '\\' +
+            path_to_annotation = 'Label' + '/' + image_name + '.txt'
 
-#             # Defining variable for current class's name
-#             class_name = ''
+            # Getting Pandas dataFrame from current annotation txt file
+            a = pd.read_csv(path_to_annotation,
+                            header=None,
+                            delim_whitespace=True)
 
-#             # Getting class's name from current Pandas dataFrame
-#             # Assembling complex name if it consists of few words
-#             for i in range(a_columns - 4):
-#                 class_name += a.loc[0, i]
+            # Getting number of rows and columns from current Pandas dataFrame
+            a_rows = a.shape[0]
+            a_columns = a.shape[1]
 
-#                 # Adding space at the end
-#                 class_name += ' '
+            # Defining variable for current class's name
+            class_name = ''
 
-#             # Deleting space at the end
-#             class_name = class_name.rstrip(' ')
+            # Getting class's name from current Pandas dataFrame
+            # Assembling complex name if it consists of few words
+            for i in range(a_columns - 4):
+                class_name += a.loc[0, i]
 
-#             # Getting index of class's name
-#             # according to its order in the list 'labels'
-#             class_index = labels.index(class_name)
+                # Adding space at the end
+                class_name += ' '
 
-#             # Preparing index to start reading coordinates of objects from
-#             ii = a_columns - 4
+            # Deleting space at the end
+            class_name = class_name.rstrip(' ')
 
-#             # Iterating all rows from current Pandas dataFrame
-#             for i in range(a_rows):
-#                 # Getting coordinates of current object
-#                 # Making numbers as integers
-#                 x_min = int(a.loc[i, ii])
-#                 y_min = int(a.loc[i, ii + 1])
-#                 x_max = int(a.loc[i, ii + 2])
-#                 y_max = int(a.loc[i, ii + 3])
+            # Getting index of class's name
+            # according to its order in the list 'labels'
+            class_index = labels.index(class_name)
 
-#                 # Checking if current object's height & width are bigger than 64
-#                 if (y_max - y_min) >= 64 and (x_max - x_min) >= 64:
-#                     # Cutting object from entire image
-#                     cut_object = image_array[y_min:y_max, x_min:x_max]
+            # Preparing index to start reading coordinates of objects from
+            ii = a_columns - 4
 
-#                     # Resizing cut object to 64 by 64 pixels size
-#                     cut_object = cv2.resize(cut_object,
-#                                             (64, 64),
-#                                             interpolation=cv2.INTER_CUBIC)
+            # Iterating all rows from current Pandas dataFrame
+            for i in range(a_rows):
+                # Getting coordinates of current object
+                # Making numbers as integers
+                x_min = int(a.loc[i, ii])
+                y_min = int(a.loc[i, ii + 1])
+                x_max = int(a.loc[i, ii + 2])
+                y_max = int(a.loc[i, ii + 3])
 
-#                     # Checking if it is the first object
-#                     if first_object:
-#                         # Assigning to the first position first object
-#                         x_train[0, :, :, :] = cut_object
+                # Checking if current object's height & width are bigger than 64
+                if (y_max - y_min) >= 64 and (x_max - x_min) >= 64:
+                    # Cutting object from entire image
+                    cut_object = image_array[y_min:y_max, x_min:x_max]
 
-#                         # Assigning to the first position its class index
-#                         y_train[0] = class_index
+                    # Resizing cut object to 64 by 64 pixels size
+                    cut_object = cv2.resize(cut_object,
+                                            (64, 64),
+                                            interpolation=cv2.INTER_CUBIC)
 
-#                         # Changing boolean variable
-#                         first_object = False
+                    # Checking if it is the first object
+                    if first_object:
+                        # Assigning to the first position first object
+                        x_train[0, :, :, :] = cut_object
 
-#                     # Collecting next objects into temp arrays
-#                     # Concatenating arrays vertically
-#                     else:
-#                         # Assigning to temp array current object
-#                         x_temp[0, :, :, :] = cut_object
+                        # Assigning to the first position its class index
+                        y_train[0] = class_index
 
-#                         # Assigning to temp array its class index
-#                         y_temp[0] = class_index
+                        # Changing boolean variable
+                        first_object = False
 
-#                         # Concatenating vertically temp arrays to main arrays
-#                         x_train = np.concatenate((x_train, x_temp), axis=0)
-#                         y_train = np.concatenate((y_train, y_temp), axis=0)
+                    # Collecting next objects into temp arrays
+                    # Concatenating arrays vertically
+                    else:
+                        # Assigning to temp array current object
+                        x_temp[0, :, :, :] = cut_object
 
-# """
+                        # Assigning to temp array its class index
+                        y_temp[0] = class_index
+
+                        # Concatenating vertically temp arrays to main arrays
+                        x_train = np.concatenate((x_train, x_temp), axis=0)
+                        y_train = np.concatenate((y_train, y_temp), axis=0)
+
+"""
 # End of:
 # Cutting objects from images
 # """
