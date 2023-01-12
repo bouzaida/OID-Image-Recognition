@@ -56,7 +56,7 @@ full_path_to_codes = \
 # or:
 # 'C:\\Users\\your_name\\Downloads\\toolkit\\OID\\Dataset\\train\\downloaded_dataset'
 full_path_to_images = \
-    '/home/souheil/OID-Image-Recognition/OID/Dataset/train/Traffic sign'
+    '/home/souheil/OID-Image-Recognition/OID/Dataset/train/Traffic sign_Car_Bus'
 
 """
 End of:
@@ -72,7 +72,7 @@ Defining list of classes' names
 # Defining list of classes' names
 # (!) Spell in the same way they are in Open Images Dataset
 # (!) No need to use '_' if the name consists of two or more words
-# labels = ['Horse', 'Tiger' 'Cat', 'Dog', 'Polar bear'] i will modify it later 
+labels = ['Traffic sign', 'Car' , 'Bus'] #i will modify it later 
 
 """
 End of:
@@ -241,126 +241,126 @@ for current_dir, dirs, files in os.walk('.'):
 # """
 
 
-# """
-# Start of:
-# Shuffling data along the first axis
-# """
+"""
+Start of:
+Shuffling data along the first axis
+"""
 
-# # Shuffling data along the first axis
-# # Saving appropriate connection: image --> label
-# x_train, y_train = shuffle(x_train, y_train)
+# Shuffling data along the first axis
+# Saving appropriate connection: image --> label
+x_train, y_train = shuffle(x_train, y_train)
+
+"""
+End of:
+Shuffling data along the first axis
+"""
+
+
+"""
+Start of:
+Splitting arrays into train, validation and test
+"""
+
+# Check point
+# Showing total number of collected images
+print(x_train.shape)
+print(y_train.shape)
+print()
+
+
+# Slicing first 30% of elements from Numpy arrays for training
+# Assigning sliced elements to temp Numpy arrays
+x_temp = x_train[:int(x_train.shape[0] * 0.3), :, :, :]
+y_temp = y_train[:int(y_train.shape[0] * 0.3)]
+
+
+# Slicing last 70% of elements from Numpy arrays for training
+# Re-assigning sliced elements to train Numpy arrays
+x_train = x_train[int(x_train.shape[0] * 0.3):, :, :, :]
+y_train = y_train[int(y_train.shape[0] * 0.3):]
+
+
+# Slicing first 80% of elements from temp Numpy arrays
+# Assigning sliced elements to validation Numpy arrays
+x_validation = x_temp[:int(x_temp.shape[0] * 0.8), :, :, :]
+y_validation = y_temp[:int(y_temp.shape[0] * 0.8)]
+
+
+# Slicing last 20% of elements from temp Numpy arrays
+# Assigning sliced elements to test Numpy arrays
+x_test = x_temp[int(x_temp.shape[0] * 0.8):, :, :, :]
+y_test = y_temp[int(y_temp.shape[0] * 0.8):]
 
 # """
 # End of:
-# Shuffling data along the first axis
-# """
-
-
-# """
-# Start of:
 # Splitting arrays into train, validation and test
 # """
 
-# # Check point
-# # Showing total number of collected images
-# print(x_train.shape)
-# print(y_train.shape)
-# print()
+
+"""
+Start of:
+Saving arrays into HDF5 binary file
+"""
+
+# Activating needed directory with code files
+os.chdir(full_path_to_codes)
 
 
-# # Slicing first 30% of elements from Numpy arrays for training
-# # Assigning sliced elements to temp Numpy arrays
-# x_temp = x_train[:int(x_train.shape[0] * 0.3), :, :, :]
-# y_temp = y_train[:int(y_train.shape[0] * 0.3)]
+# Check point
+# Showing currently active directory
+print('Currently active directory after 2nd changing is:')
+print(os.getcwd())
 
 
-# # Slicing last 70% of elements from Numpy arrays for training
-# # Re-assigning sliced elements to train Numpy arrays
-# x_train = x_train[int(x_train.shape[0] * 0.3):, :, :, :]
-# y_train = y_train[int(y_train.shape[0] * 0.3):]
+# Saving prepared Numpy arrays into HDF5 binary file
+# Initiating File object
+# Creating file with name 'dataset_custom.hdf5'
+# Opening it in writing mode by 'w'
+with h5py.File('dataset_custom.hdf5', 'w') as f:
+    # Calling methods to create datasets of given shapes and types
+    # Saving Numpy arrays for training
+    f.create_dataset('x_train', data=x_train, dtype='f')
+    f.create_dataset('y_train', data=y_train, dtype='i')
+
+    # Saving Numpy arrays for validation
+    f.create_dataset('x_validation', data=x_validation, dtype='f')
+    f.create_dataset('y_validation', data=y_validation, dtype='i')
+
+    # Saving Numpy arrays for testing
+    f.create_dataset('x_test', data=x_test, dtype='f')
+    f.create_dataset('y_test', data=y_test, dtype='i')
+
+"""
+End of:
+Saving arrays into HDF5 binary file
+"""
 
 
-# # Slicing first 80% of elements from temp Numpy arrays
-# # Assigning sliced elements to validation Numpy arrays
-# x_validation = x_temp[:int(x_temp.shape[0] * 0.8), :, :, :]
-# y_validation = y_temp[:int(y_temp.shape[0] * 0.8)]
-
-
-# # Slicing last 20% of elements from temp Numpy arrays
-# # Assigning sliced elements to test Numpy arrays
-# x_test = x_temp[int(x_temp.shape[0] * 0.8):, :, :, :]
-# y_test = y_temp[int(y_temp.shape[0] * 0.8):]
-
-# """
-# End of:
-# Splitting arrays into train, validation and test
-# """
-
-
-# """
-# Start of:
-# Saving arrays into HDF5 binary file
-# """
-
-# # Activating needed directory with code files
-# os.chdir(full_path_to_codes)
-
-
-# # Check point
-# # Showing currently active directory
-# print('Currently active directory after 2nd changing is:')
-# print(os.getcwd())
-
-
-# # Saving prepared Numpy arrays into HDF5 binary file
-# # Initiating File object
-# # Creating file with name 'dataset_custom.hdf5'
-# # Opening it in writing mode by 'w'
-# with h5py.File('dataset_custom.hdf5', 'w') as f:
-#     # Calling methods to create datasets of given shapes and types
-#     # Saving Numpy arrays for training
-#     f.create_dataset('x_train', data=x_train, dtype='f')
-#     f.create_dataset('y_train', data=y_train, dtype='i')
-
-#     # Saving Numpy arrays for validation
-#     f.create_dataset('x_validation', data=x_validation, dtype='f')
-#     f.create_dataset('y_validation', data=y_validation, dtype='i')
-
-#     # Saving Numpy arrays for testing
-#     f.create_dataset('x_test', data=x_test, dtype='f')
-#     f.create_dataset('y_test', data=y_test, dtype='i')
-
-# """
-# End of:
-# Saving arrays into HDF5 binary file
-# """
-
-
-# """
-# Some comments
-# Function 'cv2.resize' resizes an image down to or up to the specified size.
-# Interpolations:
-#     interpolation=cv2.INTER_AREA
-#         Shrink an image
+"""
+Some comments
+Function 'cv2.resize' resizes an image down to or up to the specified size.
+Interpolations:
+    interpolation=cv2.INTER_AREA
+        Shrink an image
         
-#     interpolation=cv2.INTER_CUBIC
-#         Enlarge an image
+    interpolation=cv2.INTER_CUBIC
+        Enlarge an image
         
-#     interpolation=cv2.INTER_LINEAR
-#         Bilinear interpolation
+    interpolation=cv2.INTER_LINEAR
+        Bilinear interpolation
         
-# More details and examples are here:
-# print(help(cv2.resize))
-# https://docs.opencv.org/4.3.0/da/d54/group__imgproc__transform.html
+More details and examples are here:
+print(help(cv2.resize))
+https://docs.opencv.org/4.3.0/da/d54/group__imgproc__transform.html
 
 
-# HDF5 file is a container that holds datasets (array-like collections of data).
-# Datasets, in turn, work like Numpy arrays.
+HDF5 file is a container that holds datasets (array-like collections of data).
+Datasets, in turn, work like Numpy arrays.
 
-# By using 'with' we open File object and automatically close it.
-# There is no need to use method 'close'
+By using 'with' we open File object and automatically close it.
+There is no need to use method 'close'
 
-# More details and examples are here:
-# https://docs.h5py.org/en/stable/quick.html
+More details and examples are here:
+https://docs.h5py.org/en/stable/quick.html
 
-# """
+"""
