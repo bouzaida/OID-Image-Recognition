@@ -74,111 +74,111 @@ print(y_test.shape)
 
 
 
-# # Defining list of classes' names
-# # (!) Spell in the same way they are in Open Images Dataset
-# # (!) No need to use '_' if the name consists of two or more words
-# labels = ['Horse', 'Tiger', 'Cat', 'Dog', 'Polar bear']
+# Defining list of classes' names
+# (!) Spell in the same way they are in Open Images Dataset
+# (!) No need to use '_' if the name consists of two or more words
+labels = ['Traffic sign' , 'Car' , 'Bus']
 
 # """task 5
 # plotting 100 images from custom dataset"""
 
 
-# # Magic function that renders the figure in a jupyter notebook
-# # instead of displaying a figure object
-# %matplotlib inline
+# Magic function that renders the figure in a jupyter notebook
+# instead of displaying a figure object
+#%matplotlib inline
 
 
-# # Setting default size of the plot
-# plt.rcParams['figure.figsize'] = (10.0, 60.0)
+# Setting default size of the plot
+plt.rcParams['figure.figsize'] = (10.0, 60.0)
 
 
-# # Defining a figure object with number of needed subplots
-# # ax is a (25, 4) numpy array
-# # To access specific subplot we call it by ax[0, 0]
-# figure, ax = plt.subplots(nrows=25, ncols=4)
+# Defining a figure object with number of needed subplots
+# ax is a (25, 4) numpy array
+# To access specific subplot we call it by ax[0, 0]
+figure, ax = plt.subplots(nrows=25, ncols=4)
 
 
-# # Plotting 100 examples along 25 rows and 4 columns
-# for i in range(25):
-#     for j in range(4):
-#         # Preparing random index
-#         ii = np.random.randint(low=0, high=x_train.shape[0])
+# Plotting 100 examples along 25 rows and 4 columns
+for i in range(25):
+    for j in range(4):
+        # Preparing random index
+        ii = np.random.randint(low=0, high=x_train.shape[0])
         
-#         # Plotting current subplot
-#         ax[i, j].imshow(x_train[ii].astype('uint8'))
+        # Plotting current subplot
+        ax[i, j].imshow(x_train[ii].astype('uint8'))
         
-#         # Giving name to current subplot
-#         # according to class's name in list 'labels'
-#         ax[i, j].set_title(labels[y_train[ii]], fontsize=16)
+        # Giving name to current subplot
+        # according to class's name in list 'labels'
+        ax[i, j].set_title(labels[y_train[ii]], fontsize=16)
         
-#         # Hiding axis
-#         ax[i, j].axis('off')
+        # Hiding axis
+        ax[i, j].axis('off')
 
 
-# # Adjusting distance between subplots
-# plt.tight_layout()
+# Adjusting distance between subplots
+plt.tight_layout()
 
 
-# # Saving the plot
-# figure.savefig('plot_100_custom_images.png')
+# Saving the plot
+figure.savefig('plot_100_custom_images.png')
 
 
-# # Showing the plot
-# plt.show()
+# Showing the plot
+plt.show()
 
 # """task 6
 #  Plotting histogram to show distribution of images among classes"""
 
 
 
-# # Magic function that renders the figure in a jupyter notebook
-# # instead of displaying a figure object
-# %matplotlib inline
+# Magic function that renders the figure in a jupyter notebook
+# instead of displaying a figure object
+#%matplotlib inline
 
 
-# # Setting default size of the plot
-# plt.rcParams['figure.figsize'] = (10.0, 7.0)
+# Setting default size of the plot
+plt.rcParams['figure.figsize'] = (10.0, 7.0)
 
 
-# # Calculating number of images for every class
-# # Iterating all classes' indexes in 'y_train' array
-# # Using Numpy function 'unique'
-# # Returning sorted unique elements and their frequencies
-# classesIndexes, classesFrequency = np.unique(y_train, return_counts=True)
+# Calculating number of images for every class
+# Iterating all classes' indexes in 'y_train' array
+# Using Numpy function 'unique'
+# Returning sorted unique elements and their frequencies
+classesIndexes, classesFrequency = np.unique(y_train, return_counts=True)
 
 
-# # Printing frequency (number of images) for every class
-# print('classes indexes:' , classesIndexes)
-# print('classes frequency:', classesFrequency)
+# Printing frequency (number of images) for every class
+print('classes indexes:' , classesIndexes)
+print('classes frequency:', classesFrequency)
 
 
-# # Plotting histogram of 5 classes with their number of images
-# # Defining a figure object 
-# figure = plt.figure()
+# Plotting histogram of 5 classes with their number of images
+# Defining a figure object 
+figure = plt.figure()
 
 
-# # Plotting Bar chart
-# plt.bar(classesIndexes, classesFrequency, align='center', alpha=0.6)
+# Plotting Bar chart
+plt.bar(classesIndexes, classesFrequency, align='center', alpha=0.6)
 
 
-# # Giving name to Y axis
-# plt.ylabel('Class frequency', fontsize=16)
+# Giving name to Y axis
+plt.ylabel('Class frequency', fontsize=16)
 
 
-# # Giving names to every Bar along X axis
-# plt.xticks(classesIndexes, labels, fontsize=16)
+# Giving names to every Bar along X axis
+plt.xticks(classesIndexes, labels, fontsize=16)
 
 
-# # Giving name to the plot
-# plt.title('Histogram of Custom Dataset', fontsize=20)
+# Giving name to the plot
+plt.title('Histogram of Custom Dataset', fontsize=20)
 
 
-# # Saving the plot
-# figure.savefig('histogram_custom_images.png')
+# Saving the plot
+figure.savefig('histogram_custom_images.png')
 
 
-# # Showing the plot
-# plt.show()
+# Showing the plot
+plt.show()
 
 
 # """"task 7"""
