@@ -166,7 +166,7 @@ plt.ylabel('Class frequency', fontsize=16)
 
 
 # Giving names to every Bar along X axis
-plt.xticks(classesIndexes, labels, fontsize=16)
+#plt.xticks(classesIndexes, labels, fontsize=16)
 
 
 # Giving name to the plot
@@ -181,14 +181,14 @@ figure.savefig('histogram_custom_images.png')
 plt.show()
 
 
-# """"task 7"""
+""""task 7"""
 
-# print(help(np.unique))
+print(help(np.unique))
 
 
-# """task 8"""
+"""task 8"""
 
-# print(help(plt.bar))
+print(help(plt.bar))
 
 
 
