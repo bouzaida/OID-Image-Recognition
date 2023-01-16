@@ -158,175 +158,175 @@ for current_dir, dirs, files in os.walk('GTSRB'):
                 intermediate_f.create_dataset('x_train', data=x_train, dtype='f')
                 intermediate_f.create_dataset('y_train', data=y_train, dtype='i')
 
-"""
-End of:
-Cutting Traffic Signs from images
-Saving collected Traffic Signs into multiple HDF5 files
-"""
+# """
+# End of:
+# Cutting Traffic Signs from images
+# Saving collected Traffic Signs into multiple HDF5 files
+# """
 
 
-"""
-Start of:
-Collecting all arrays from created HDF5 files into united Numpy arrays
-"""
+# """
+# Start of:
+# Collecting all arrays from created HDF5 files into united Numpy arrays
+# """
 
-# Opening one of the 44 saved dataset from HDF5 binary file
-# Initiating File object
-# Opening file in reading mode by 'r'
-# (!) On Windows, it might need to change
-# this: + '/' +
-# to this: + '\' +
-# or to this: + '\\' +
-with h5py.File('GTSRB/GT-final_test.hdf5', 'r') as f:
-    # Extracting saved arrays for training by appropriate keys
-    # Saving them into new variables
-    x_train = f['x_train']  # HDF5 dataset
-    y_train = f['y_train']  # HDF5 dataset
+# # Opening one of the 44 saved dataset from HDF5 binary file
+# # Initiating File object
+# # Opening file in reading mode by 'r'
+# # (!) On Windows, it might need to change
+# # this: + '/' +
+# # to this: + '\' +
+# # or to this: + '\\' +
+# with h5py.File('GTSRB/GT-final_test.hdf5', 'r') as f:
+#     # Extracting saved arrays for training by appropriate keys
+#     # Saving them into new variables
+#     x_train = f['x_train']  # HDF5 dataset
+#     y_train = f['y_train']  # HDF5 dataset
 
-    # Converting them into Numpy arrays
-    x_train = np.array(x_train)  # Numpy arrays
-    y_train = np.array(y_train)  # Numpy arrays
-
-
-# Opening rest 43 saved datasets from HDF5 binary files
-# Using method 'os.walk' to iterate all directories and all files
-# It starts from specified directory 'GTSRB'
-for current_dir, dirs, files in os.walk('GTSRB'):
-    # Iterating all files
-    for f in files:
-        # Checking if filename ends with '.hdf5'
-        if f.endswith('.hdf5') and f != 'GT-final_test.hdf5':
-            # Initiating File object
-            # Opening file in reading mode by 'r'
-            # (!) On Windows, it might need to change
-            # this: + '/' +
-            # to this: + '\' +
-            # or to this: + '\\' +
-            with h5py.File('GTSRB' + '/' + f, 'r') as intermediate_f:
-                # Extracting saved arrays for training by appropriate keys
-                # Saving them into new variables
-                x_temp = intermediate_f['x_train']  # HDF5 dataset
-                y_temp = intermediate_f['y_train']  # HDF5 dataset
-
-                # Converting them into Numpy arrays
-                x_temp = np.array(x_temp)  # Numpy arrays
-                y_temp = np.array(y_temp)  # Numpy arrays
-
-            # Concatenating vertically temp arrays to main arrays
-            x_train = np.concatenate((x_train, x_temp), axis=0)
-            y_train = np.concatenate((y_train, y_temp), axis=0)
-
-            # Check point
-            # Tracking progress of processing current HDF5 file
-            print('Done: ', f)
-
-"""
-End of:
-Collecting all arrays from created HDF5 files into united Numpy arrays
-"""
+#     # Converting them into Numpy arrays
+#     x_train = np.array(x_train)  # Numpy arrays
+#     y_train = np.array(y_train)  # Numpy arrays
 
 
-"""
-Start of:
-Shuffling data along the first axis
-"""
+# # Opening rest 43 saved datasets from HDF5 binary files
+# # Using method 'os.walk' to iterate all directories and all files
+# # It starts from specified directory 'GTSRB'
+# for current_dir, dirs, files in os.walk('GTSRB'):
+#     # Iterating all files
+#     for f in files:
+#         # Checking if filename ends with '.hdf5'
+#         if f.endswith('.hdf5') and f != 'GT-final_test.hdf5':
+#             # Initiating File object
+#             # Opening file in reading mode by 'r'
+#             # (!) On Windows, it might need to change
+#             # this: + '/' +
+#             # to this: + '\' +
+#             # or to this: + '\\' +
+#             with h5py.File('GTSRB' + '/' + f, 'r') as intermediate_f:
+#                 # Extracting saved arrays for training by appropriate keys
+#                 # Saving them into new variables
+#                 x_temp = intermediate_f['x_train']  # HDF5 dataset
+#                 y_temp = intermediate_f['y_train']  # HDF5 dataset
 
+#                 # Converting them into Numpy arrays
+#                 x_temp = np.array(x_temp)  # Numpy arrays
+#                 y_temp = np.array(y_temp)  # Numpy arrays
+
+#             # Concatenating vertically temp arrays to main arrays
+#             x_train = np.concatenate((x_train, x_temp), axis=0)
+#             y_train = np.concatenate((y_train, y_temp), axis=0)
+
+#             # Check point
+#             # Tracking progress of processing current HDF5 file
+#             print('Done: ', f)
+
+# """
+# End of:
+# Collecting all arrays from created HDF5 files into united Numpy arrays
+# """
+
+
+# """
+# Start of:
 # Shuffling data along the first axis
-# Saving appropriate connection: image --> label
-x_train, y_train = shuffle(x_train, y_train)
+# """
 
-"""
-End of:
-Shuffling data along the first axis
-"""
+# # Shuffling data along the first axis
+# # Saving appropriate connection: image --> label
+# x_train, y_train = shuffle(x_train, y_train)
 
-
-"""
-Start of:
-Splitting arrays into train, validation and test
-"""
-
-# Check point
-# Showing total number of collected images
-print()
-print(x_train.shape)
-print(y_train.shape)
-print()
+# """
+# End of:
+# Shuffling data along the first axis
+# """
 
 
-# Slicing first 30% of elements from Numpy arrays for training
-# Assigning sliced elements to temp Numpy arrays
-x_temp = x_train[:int(x_train.shape[0] * 0.3), :, :, :]
-y_temp = y_train[:int(y_train.shape[0] * 0.3)]
+# """
+# Start of:
+# Splitting arrays into train, validation and test
+# """
+
+# # Check point
+# # Showing total number of collected images
+# print()
+# print(x_train.shape)
+# print(y_train.shape)
+# print()
 
 
-# Slicing last 70% of elements from Numpy arrays for training
-# Re-assigning sliced elements to train Numpy arrays
-x_train = x_train[int(x_train.shape[0] * 0.3):, :, :, :]
-y_train = y_train[int(y_train.shape[0] * 0.3):]
+# # Slicing first 30% of elements from Numpy arrays for training
+# # Assigning sliced elements to temp Numpy arrays
+# x_temp = x_train[:int(x_train.shape[0] * 0.3), :, :, :]
+# y_temp = y_train[:int(y_train.shape[0] * 0.3)]
 
 
-# Slicing first 80% of elements from temp Numpy arrays
-# Assigning sliced elements to validation Numpy arrays
-x_validation = x_temp[:int(x_temp.shape[0] * 0.8), :, :, :]
-y_validation = y_temp[:int(y_temp.shape[0] * 0.8)]
+# # Slicing last 70% of elements from Numpy arrays for training
+# # Re-assigning sliced elements to train Numpy arrays
+# x_train = x_train[int(x_train.shape[0] * 0.3):, :, :, :]
+# y_train = y_train[int(y_train.shape[0] * 0.3):]
 
 
-# Slicing last 20% of elements from temp Numpy arrays
-# Assigning sliced elements to test Numpy arrays
-x_test = x_temp[int(x_temp.shape[0] * 0.8):, :, :, :]
-y_test = y_temp[int(y_temp.shape[0] * 0.8):]
-
-"""
-End of:
-Splitting arrays into train, validation and test
-"""
+# # Slicing first 80% of elements from temp Numpy arrays
+# # Assigning sliced elements to validation Numpy arrays
+# x_validation = x_temp[:int(x_temp.shape[0] * 0.8), :, :, :]
+# y_validation = y_temp[:int(y_temp.shape[0] * 0.8)]
 
 
-"""
-Start of:
-Saving final, prepared Numpy arrays into one HDF5 binary file
-"""
+# # Slicing last 20% of elements from temp Numpy arrays
+# # Assigning sliced elements to test Numpy arrays
+# x_test = x_temp[int(x_temp.shape[0] * 0.8):, :, :, :]
+# y_test = y_temp[int(y_temp.shape[0] * 0.8):]
 
-# Saving prepared Numpy arrays into HDF5 binary file
-# Initiating File object
-# Creating file with name 'dataset_ts.hdf5'
-# Opening it in writing mode by 'w'
-with h5py.File('dataset_ts.hdf5', 'w') as f:
-    # Calling methods to create datasets of given shapes and types
-    # Saving Numpy arrays for training
-    f.create_dataset('x_train', data=x_train, dtype='f')
-    f.create_dataset('y_train', data=y_train, dtype='i')
-
-    # Saving Numpy arrays for validation
-    f.create_dataset('x_validation', data=x_validation, dtype='f')
-    f.create_dataset('y_validation', data=y_validation, dtype='i')
-
-    # Saving Numpy arrays for testing
-    f.create_dataset('x_test', data=x_test, dtype='f')
-    f.create_dataset('y_test', data=y_test, dtype='i')
-
-"""
-End of:
-Saving final, prepared Numpy arrays into one HDF5 binary file
-"""
+# """
+# End of:
+# Splitting arrays into train, validation and test
+# """
 
 
-"""
-Some comments
-Function 'cv2.resize' resizes an image down to or up to the specified size.
-Interpolations:
-    interpolation=cv2.INTER_AREA
-        Shrink an image
+# """
+# Start of:
+# Saving final, prepared Numpy arrays into one HDF5 binary file
+# """
 
-    interpolation=cv2.INTER_CUBIC
-        Enlarge an image
+# # Saving prepared Numpy arrays into HDF5 binary file
+# # Initiating File object
+# # Creating file with name 'dataset_ts.hdf5'
+# # Opening it in writing mode by 'w'
+# with h5py.File('dataset_ts.hdf5', 'w') as f:
+#     # Calling methods to create datasets of given shapes and types
+#     # Saving Numpy arrays for training
+#     f.create_dataset('x_train', data=x_train, dtype='f')
+#     f.create_dataset('y_train', data=y_train, dtype='i')
 
-    interpolation=cv2.INTER_LINEAR
-        Bilinear interpolation
+#     # Saving Numpy arrays for validation
+#     f.create_dataset('x_validation', data=x_validation, dtype='f')
+#     f.create_dataset('y_validation', data=y_validation, dtype='i')
 
-More details and examples are here:
-print(help(cv2.resize))
-https://docs.opencv.org/4.3.0/da/d54/group__imgproc__transform.html
+#     # Saving Numpy arrays for testing
+#     f.create_dataset('x_test', data=x_test, dtype='f')
+#     f.create_dataset('y_test', data=y_test, dtype='i')
 
-"""
+# """
+# End of:
+# Saving final, prepared Numpy arrays into one HDF5 binary file
+# """
+
+
+# """
+# Some comments
+# Function 'cv2.resize' resizes an image down to or up to the specified size.
+# Interpolations:
+#     interpolation=cv2.INTER_AREA
+#         Shrink an image
+
+#     interpolation=cv2.INTER_CUBIC
+#         Enlarge an image
+
+#     interpolation=cv2.INTER_LINEAR
+#         Bilinear interpolation
+
+# More details and examples are here:
+# print(help(cv2.resize))
+# https://docs.opencv.org/4.3.0/da/d54/group__imgproc__transform.html
+
+# """
